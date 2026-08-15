@@ -11,7 +11,6 @@ export function formatDateTime(date: Date, timeZone: string) {
     timeZone,
     hour: "2-digit",
     minute: "2-digit",
-    second: "2-digit",
     hour12: false,
   }).format(date);
 
@@ -23,4 +22,13 @@ export function formatDateTime(date: Date, timeZone: string) {
     .find((part) => part.type === "timeZoneName")?.value;
 
   return { dateLabel, timeLabel, offsetLabel: offsetLabel ?? "" };
+}
+
+/** Formats a Date as a `datetime-local` input value using the browser's own
+ * local timezone (which is what `<input type="datetime-local">` always uses). */
+export function toDateTimeLocalValue(date: Date) {
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(
+    date.getDate()
+  )}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
 }
